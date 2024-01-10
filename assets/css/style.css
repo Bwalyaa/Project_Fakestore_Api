@@ -73,11 +73,11 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: box-shadow 0.3s ease; /* Füge eine sanfte Überblendung hinzu */
+    transition: box-shadow 0.3s ease; 
   }
   
   .container > div:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Überblendungseffekt beim Hovern */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
   
   .container img {
@@ -85,16 +85,16 @@ main {
     height: 100%;
     margin: 0 auto;
     display: block;
-    margin-bottom: 15px; /* Abstand unter dem Bild */
+    margin-bottom: 15px;
   }
   
   .container h3 {
     font-size: 1.2em;
-    margin-bottom: 10px; /* Abstand unter dem Titel */
+    margin-bottom: 10px; 
   }
   
   .container p {
-    margin-bottom: 15px; /* Abstand unter dem Preis */
+    margin-bottom: 15px; 
   }
   
   .container button {
@@ -104,7 +104,7 @@ main {
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Sanfter Farbübergang beim Hovern */
+    transition: background-color 0.3s ease;
   }
   
   .container button:hover {
