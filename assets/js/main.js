@@ -1,83 +1,121 @@
-let allProducts = []
+
+
+
+
+// Globale Variable
+let allProducts;  
 
 fetch('https://fakestoreapi.com/products')
-    .then(response => response.json())
-    .then(json => {
-        console.log(json)
-         ProductAusDemJson = json;
-         console.log(ProductAusDemJson);
-        search(json)
+  .then(response => response.json())
+  .then(json => {
+    console.log(json);
+    allProducts = json;
 
-        ProductAusDemJson.forEach((product) => {
-            const productCategory = product.category;
-            const productPrice = product.price;
-            const productUrl = product.image;
-            const productTitle = product.title;
+    showAllProducts(allProducts); // Anzeige aller Produkte beim ersten Laden der Seite
+  })
+  .catch(error => console.error('Error fetching data:', error));
 
-            let productItem = document.createElement("div")
+function showAllProducts(products) {
+  products.forEach((product) => {
+    const productItem = createProductItem(product);
+    document.querySelector("#products").appendChild(productItem);
+  });
+}
 
-            // img
-            const productImg = document.createElement("img")
-            productImg.setAttribute("src", productUrl)
-            productImg.setAttribute("alt", productTitle)
-            productItem.appendChild(productImg)
+function search() {
+  const searchTerm = document.getElementById('input').value.toLowerCase();
 
-            document.body.appendChild(productItem);
+  // löschung des suchergebnisses
+  document.querySelector("#products").innerHTML = "";
 
-            // Price
-            let p = document.createElement("p")
-            p.textContent = productPrice
-            productItem.appendChild(p)
+  const filteredProducts = allProducts.filter(product => product.title.toLowerCase().includes(searchTerm));
+  showAllProducts(filteredProducts);
+}
 
-            //Button
-            let addToCardBtn = document.createElement("button")
-            addToCardBtn.textContent = "add to card"
+function createProductItem(product) {
+  const productItem = document.createElement("div");
 
-            
-        });
-    
-    })
-    .catch(error => console.error('Fehler beim Abrufen der Daten:', error));
+  // Image
+  const productImg = document.createElement("img");
+  productImg.setAttribute("src", product.image);
+  productImg.setAttribute("alt", product.title);
+  productItem.appendChild(productImg);
+
+    // Title
+    const titleElement = document.createElement("h3");
+    titleElement.textContent = product.title;
+    productItem.appendChild(titleElement);
+
+  // Price
+  const p = document.createElement("p");
+  p.textContent = product.price + " $";
+  productItem.appendChild(p);
+
+  // Button
+  const addToCartBtn = document.createElement("button");
+  addToCartBtn.textContent = "Add to Cart";
+
+  
+  productItem.appendChild(addToCartBtn);
+
+  return productItem;
+}
 
 
-
-    let search = () => {
-        let input = document.querySelector("#input").value.toLowerCase();
-        let filteredProducts = allProducts.filter((element) => {
-            for(const key in element){
-                if (element[key].toString().toLowerCase().includes(input)){
-                    return true
-                }
-            }
-            return false 
-        }) 
-        ProductAusDemJson(filteredProducts)
-    
-        // let copiedProducts = [...ProductAusDemJson];
-        // let titleResult = copiedProducts.filter((product) => product.title.toLowerCase().includes(input));
-        // let categoryResult = copiedProducts.filter((product) => product.category.toLowerCase().includes(input));
-    
-        // if (titleResult.length > 0) {
-        //     resetProducts();
-        //     titleResult;
-        // } else if (categoryResult.length > 0) {
-        //     resetProducts();
-        //     categoryResult;
-        // } else {
-        //     resetProducts();
-        //     productContainer.innerHTML = `<p class="noResult">No result found</p>`;
-        //     console.log("No result found");
-        // }
-    };
-
-    let resetProducts = () => {
-        products.innerHTML = ""
+// filter nach electronics category
+function filterByCategory(category) {
+    document.querySelector("#products").innerHTML = "";
+  
+    if (category === "all") {
+      showAllProducts(allProducts);
+    } else {
+      const filteredProducts = allProducts.filter(product => product.category.toLowerCase() === category);
+      showAllProducts(filteredProducts);
     }
-    
-    // let showProducts = () => {
-    //     ProductAusDemJson.innerHTML 
-    // }
+  }
+  
+  document.querySelector('.electronicsBtn').addEventListener('click', function() {
+    filterByCategory('electronics');
+  });
 
-            
+  // Event listener for the "Jewelry" button
+document.querySelector('.jeweleryBtn').addEventListener('click', function() {
+    filterByCategory('jewelery');
+  });
+  
+  
+ // Event listener for the "Men's Clothing" button
+document.querySelector('.mensClothingBtn').addEventListener('click', function() {
+    filterByCategory('men\'s clothing');
+  });
+  
+  // Event listener for the "Women's Clothing" button
+document.querySelector('.womensClotthingBtn').addEventListener('click', function() {
+    filterByCategory('women\'s clothing');
+  });
+  
+  
+document.getElementById('sortBy').addEventListener('change', function() {
+    const selectedValue = this.value;
 
+    if (selectedValue === 'lowToHigh') {
+        sortByPriceLowToHigh();
+    } else if (selectedValue === 'highToLow') {
+        sortByPriceHighToLow();
+    }
+});
+
+// sortieren von low to high
+function sortByPriceLowToHigh() {
+    const sortedProducts = allProducts.slice().sort((a, b) => a.price - b.price);
+    document.querySelector("#products").innerHTML = "";
+    showAllProducts(sortedProducts);
+}
+
+// sortieren von high to low
+function sortByPriceHighToLow() {
+    const sortedProducts = allProducts.slice().sort((a, b) => b.price - a.price);
+    document.querySelector("#products").innerHTML = "";
+    showAllProducts(sortedProducts);
+}
 
